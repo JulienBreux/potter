@@ -1,4 +1,4 @@
-package web
+package webui
 
 import (
 	"log"
@@ -7,12 +7,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
 	"github.com/julienbreux/potter/pkg/color"
-	"github.com/julienbreux/potter/ui"
+	"github.com/julienbreux/potter/webui"
 )
 
 func New(version string) {
 	bgcolor := color.RandomColor()
-	engine := html.NewFileSystem(http.FS(ui.Views), ".html")
+	engine := html.NewFileSystem(http.FS(webui.Views), ".html")
 
 	app := fiber.New(fiber.Config{
 		Views: engine,

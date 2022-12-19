@@ -1,0 +1,19 @@
+(A) Boostrap project
+(A) Create the webserver
+(A) Create the metrics server
+
+(A) As user, I can use the spell Engorgio to increase memory usage of container +memory +engorgio
+(A) As user, I can use the spell Reducto to decrease memory usage of container +memory +reducto
+(A) As user, I can use the spell Engorgio to increase CPU usage of container +cpu +engorgio
+(A) As user, I can use the spell Reducto to decrease CPU usage of container +cpu +reducto
+
+(A) As user, I can connect a Potter container to an other Potter container
+(A) As user, I can use the spell Avada Kedavra to kill the container +global +avadakdavra
+
+(A) As user, I can use the spell Colovaria to change the color of interfaces of a container +global +colovaria
+(A) As user, I can use the spell Confundo to introduce random error +network +confundo
+(A) As user, I can use the spell Reparo to cancel introduction of error +network +reparo
+
+(error logs / metrics / network / memory / cpu)
+
+Periculum/red
