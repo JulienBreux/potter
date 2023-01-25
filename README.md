@@ -1,7 +1,5 @@
 ## ⚡️ Potter
 
----
-
 ⚡️ Potter is an image for educational purposes and to test the behavior of the infrastructure.  
 
 The main idea is very simple:  
