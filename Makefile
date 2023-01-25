@@ -2,7 +2,10 @@ BINDIR  := $(CURDIR)/bin
 BINNAME ?= potter
 
 test: ## [project] Test packages
-	go test all -count=1 -cover -coverprofile=coverage.out -v ./...
+	go test -count=1 -cover -coverprofile=cover.out -v ./...
+
+test-cover: ## [project] Display coverage
+	go tool cover -html cover.out -o cover.html
 
 upgrade-deps: ## [project] Upgrade all dependencies
 	go get -u ./...

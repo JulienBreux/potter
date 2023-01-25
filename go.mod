@@ -3,7 +3,7 @@ module github.com/julienbreux/potter
 go 1.19
 
 require (
-	github.com/go-playground/colors v1.3.0
+	github.com/dustin/go-humanize v1.0.1
 	github.com/gofiber/fiber/v2 v2.41.0
 	github.com/gofiber/template v1.7.4
 	github.com/spf13/cobra v1.6.1
