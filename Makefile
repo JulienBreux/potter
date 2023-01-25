@@ -2,7 +2,10 @@ BINDIR  := $(CURDIR)/bin
 BINNAME ?= potter
 
 test: ## [project] Test packages
-	go test -count=1 -cover -coverprofile=coverage.out -v ./...
+	go test all -count=1 -cover -coverprofile=coverage.out -v ./...
+
+upgrade-deps: ## [project] Upgrade all dependencies
+	go get -u ./...
 
 build: ## [binary] Build local binary
 	mkdir -p ./bin
