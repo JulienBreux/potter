@@ -1,0 +1,20 @@
+    <h2>Environment Variables</h2>
+    <hr>
+    <table>
+    <thead>
+    <tr>
+        <th class="text-left">Variable name</th>
+        <th class="text-left">Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range $k, $v := .vars}}
+    <tr>
+        <td class="key">{{$k}}</td>
+        <td class="value">
+            {{$v}}
+        </td>
+    </tr>
+    {{end}}
+    </tbody>
+    </table>

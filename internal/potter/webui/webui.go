@@ -2,6 +2,8 @@ package webui
 
 import (
 	"fmt"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -40,7 +42,8 @@ func New(version string) Webui {
 	config := fiber.Config{
 		DisableStartupMessage: true,
 
-		Views: engine,
+		Views:       engine,
+		ViewsLayout: "layouts/main",
 	}
 	app := fiber.New(config)
 
@@ -53,7 +56,7 @@ func New(version string) Webui {
 
 	app.Static("assets", "./assets")
 
-	app.Get("/", func(c *fiber.Ctx) error {
+	app.Use(func(c *fiber.Ctx) error {
 		ua := string(c.Context().UserAgent())
 		vars := fiber.Map{
 			"version":   version,
@@ -64,10 +67,31 @@ func New(version string) Webui {
 			"userAgent": ua,
 			"startTime": now.Format(dateFormat),
 		}
-		if userAgentIsCurl(ua) {
-			return c.Render("curl", vars)
+		if err := c.Bind(vars); err != nil {
+			return err
 		}
-		return c.Render("index", vars)
+		return c.Next()
+	})
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		if userAgentIsCurl(string(c.Context().UserAgent())) {
+			return c.Render("curl/index", fiber.Map{}, "")
+		}
+		return c.Render("index", fiber.Map{})
+	})
+
+	app.Get("/vars", func(c *fiber.Ctx) error {
+		envvars := make(map[string]string)
+		// TODO: Move to package
+		for _, keyval := range os.Environ() {
+			v := strings.Split(keyval, "=")
+			envvars[v[0]] = v[1]
+		}
+		vars := fiber.Map{"vars": envvars}
+		if userAgentIsCurl(string(c.Context().UserAgent())) {
+			return c.Render("curl/vars", vars, "")
+		}
+		return c.Render("vars", vars)
 	})
 
 	return Webui{

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Potter — {{.version}}</title>
+
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+
+    <style>
+    body {
+        background-color: {{.bgColor}};
+    }
+    .container {
+        display: block;
+        background-color: #FFFFFF;
+        color: #474747;
+        margin: 10px;
+        padding: 10px;
+    }
+    .text-left {
+        text-align: left;
+    }
+    footer {
+        text-align: center;
+        font-size: .8em;
+        color: {{.fgColor}};
+    }
+    table {
+        border: 1px solid #474747;
+        border-collapse: collapse;
+        table-layout: fixed;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid black;
+        overflow: hidden;
+    }
+    thead th {
+        font-size: 1.4em;
+        background-color: #474747;
+        color: #fff;
+    }
+    tbody tr:nth-child(odd){
+        background-color: #eee;
+    }
+    tbody tr:hover {
+        background-color: #474747;
+        color: #fff;
+    }
+    .key {
+        vertical-align: top;
+    }
+    .value {
+        vertical-align: top;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        hyphens: auto;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{.emoji}} {{.name}}</h1>
+        <nav>
+            <a href="/">Informations</a>
+            |
+            <a href="/vars">Env. variables</a>
+        </nav>
+        {{embed}}
+    </div>
+    <footer>
+        Magic will always be present in moderation —
+        <a href="https://github.com/JulienBreux/potter">Julien Breux</a>
+    </footer>
+</body>
+</html>
