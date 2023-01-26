@@ -73,26 +73,8 @@ func New(version string) Webui {
 		return c.Next()
 	})
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		if userAgentIsCurl(string(c.Context().UserAgent())) {
-			return c.Render("curl/index", fiber.Map{}, "")
-		}
-		return c.Render("index", fiber.Map{})
-	})
-
-	app.Get("/vars", func(c *fiber.Ctx) error {
-		envvars := make(map[string]string)
-		// TODO: Move to package
-		for _, keyval := range os.Environ() {
-			v := strings.Split(keyval, "=")
-			envvars[v[0]] = v[1]
-		}
-		vars := fiber.Map{"vars": envvars}
-		if userAgentIsCurl(string(c.Context().UserAgent())) {
-			return c.Render("curl/vars", vars, "")
-		}
-		return c.Render("vars", vars)
-	})
+	app.Get("/", pageIndex)
+	app.Get("/vars", pageVars)
 
 	return Webui{
 		app: app,
@@ -106,4 +88,25 @@ func (w Webui) Run() error {
 
 func userAgentIsCurl(userAgent string) bool {
 	return userAgent[0:4] == "curl"
+}
+
+func pageIndex(c *fiber.Ctx) error {
+	if userAgentIsCurl(string(c.Context().UserAgent())) {
+		return c.Render("curl/index", fiber.Map{}, "")
+	}
+	return c.Render("index", fiber.Map{})
+}
+
+func pageVars(c *fiber.Ctx) error {
+	envvars := make(map[string]string)
+	// TODO: Move to package
+	for _, keyval := range os.Environ() {
+		v := strings.Split(keyval, "=")
+		envvars[v[0]] = v[1]
+	}
+	vars := fiber.Map{"vars": envvars}
+	if userAgentIsCurl(string(c.Context().UserAgent())) {
+		return c.Render("curl/vars", vars, "")
+	}
+	return c.Render("vars", vars)
 }
