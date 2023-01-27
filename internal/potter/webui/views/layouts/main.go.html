@@ -22,6 +22,7 @@
         text-align: left;
     }
     footer {
+        padding: 10px 0;
         text-align: center;
         font-size: .8em;
         color: {{.fgColor}};
@@ -60,6 +61,23 @@
         -moz-hyphens: auto;
         hyphens: auto;
     }
+    textarea {
+        width: 100%;
+        height: 400px;
+    }
+    .alert {
+        display: block;
+        padding: 5px;
+        margin: 5px;
+    }
+    .alert-success {
+        color: #474747;
+        background-color: #76D7C4;
+    }
+    .alert-error {
+        color: #fff;
+        background-color: #C70039;
+    }
     </style>
 </head>
 <body>
@@ -69,12 +87,14 @@
             <a href="/">Informations</a>
             |
             <a href="/vars">Env. variables</a>
+            |
+            <a href="/files">Files</a>
         </nav>
         {{embed}}
+        <footer>
+            “Help will always be given in this system to those who ask for it” —
+            <a href="https://github.com/JulienBreux/potter" target="_blank">Julien Breux</a>
+        </footer>
     </div>
-    <footer>
-        Magic will always be present in moderation —
-        <a href="https://github.com/JulienBreux/potter">Julien Breux</a>
-    </footer>
 </body>
 </html>

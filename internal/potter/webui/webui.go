@@ -1,11 +1,16 @@
 package webui
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
+	"github.com/dustin/go-humanize"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
 	"github.com/julienbreux/potter/pkg/color"
@@ -75,6 +80,10 @@ func New(version string) Webui {
 
 	app.Get("/", pageIndex)
 	app.Get("/vars", pageVars)
+	app.Get("/files", pageFiles)
+	app.Get("/files/read", pageFilesRead)
+	app.Post("/files/update", pageFilesUpdate)
+	app.Get("/files/delete", pageFilesDelete)
 
 	return Webui{
 		app: app,
@@ -109,4 +118,101 @@ func pageVars(c *fiber.Ctx) error {
 		return c.Render("curl/vars", vars, "")
 	}
 	return c.Render("vars", vars)
+}
+
+func pageFiles(c *fiber.Ctx) error {
+	files := make(map[string]string)
+
+	err := filepath.Walk(".",
+		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if path == "." {
+				return nil
+			}
+			files[path] = humanize.Bytes(uint64(info.Size()))
+			return nil
+		})
+	if err != nil {
+		log.Println(err)
+	}
+
+	vars := fiber.Map{
+		"files": files,
+
+		"path":          c.Query("path"),
+		"error":         c.Query("error"),
+		"deleteSuccess": c.Query("deleteSuccess"),
+		"deleteError":   c.Query("deleteError"),
+		"updateSuccess": c.Query("updateSuccess"),
+		"updateError":   c.Query("updateError"),
+	}
+	if userAgentIsCurl(string(c.Context().UserAgent())) {
+		return c.Render("curl/files", vars, "")
+	}
+	return c.Render("files/files", vars)
+}
+
+func pageFilesRead(c *fiber.Ctx) error {
+	file := c.Query("path")
+
+	newFile := false
+	content, err := os.ReadFile(file)
+	if err != nil {
+		newFile = true
+	}
+
+	vars := fiber.Map{
+		"path":    c.Query("path"),
+		"content": string(content),
+		"new":     newFile,
+	}
+	return c.Render("files/read", vars)
+}
+
+func pageFilesDelete(c *fiber.Ctx) error {
+	path := c.Query("path")
+
+	// TODO: Move action
+	if strings.HasPrefix(path, "/") ||
+		strings.HasPrefix(path, "./") ||
+		strings.HasPrefix(path, "../") {
+		return c.Redirect("/files?deleteError=1&path=" + path)
+	}
+
+	if err := os.Remove(path); err != nil {
+		return c.Redirect("/files?deleteError=1&path=" + path + "&error=" + err.Error())
+	}
+
+	return c.Redirect("/files?deleteSuccess=1&path=" + path)
+}
+
+type file struct {
+	Path, Content string
+}
+
+func pageFilesUpdate(c *fiber.Ctx) error {
+	f := new(file)
+
+	if err := c.BodyParser(f); err != nil {
+		return err
+	}
+
+	// TODO: Define perms
+	ctnt := normalizeNewlines([]byte(f.Content))
+	const perm = 0600
+	if err := ioutil.WriteFile(f.Path, ctnt, perm); err != nil {
+		return err
+	}
+
+	return c.Redirect("/files?updateSuccess=1&path=" + f.Path)
+}
+
+func normalizeNewlines(d []byte) []byte {
+	// replace CR LF \r\n (windows) with LF \n (unix)
+	d = bytes.ReplaceAll(d, []byte{13, 10}, []byte{10})
+	// replace CF \r (mac) with LF \n (unix)
+	d = bytes.ReplaceAll(d, []byte{13}, []byte{10})
+	return d
 }

@@ -1,0 +1,11 @@
+<h2>{{if .new}}Create{{else}}Edit{{end}} file: {{.path}}</h2>
+<form method="post" action="/files/update" enctype="multipart/form-data" accept-charset="utf-8">
+    <p>
+        <input type="hidden" name="path" value="{{.path}}">
+        <label for="input-content">Content</label>
+    </p>
+    <textarea name="content" id="input-content">{{.content}}</textarea>
+    <p>
+        <input type="submit" value="Save">
+    </p>
+</form>
