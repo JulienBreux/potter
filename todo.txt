@@ -1,19 +1,19 @@
-(A) Boostrap project
-(A) Create the webserver
-(A) Create the metrics server
+x (A) Boostrap project
+x (A) Create the webserver
+x (A) As user, I can identify my container with color, name and
+x (A) As user, I can display my environment variables
+x (A) As user, I can display the files in files system
+x (A) As user, I can edit a file
+x (A) As user, I can delete a file
+(A) As user, I can create a file
+(A) As user, I can display my current memory usage
+(A) As user, I can increase an additional memory load
+(A) As user, I can decrease the additional memory load
+(A) As user, I can display my current CPU usage
+(A) As user, I can increase an additional CPU load
+(A) As user, I can decrease the additional CPU load
+(A) Create the helthcheck endpoint /healthcheck
+(A) Create the metrics entpoint /metrics
 
-(A) As user, I can use the spell Engorgio to increase memory usage of container +memory +engorgio
-(A) As user, I can use the spell Reducto to decrease memory usage of container +memory +reducto
-(A) As user, I can use the spell Engorgio to increase CPU usage of container +cpu +engorgio
-(A) As user, I can use the spell Reducto to decrease CPU usage of container +cpu +reducto
-
-(A) As user, I can connect a Potter container to an other Potter container
-(A) As user, I can use the spell Avada Kedavra to kill the container +global +avadakdavra
-
-(A) As user, I can use the spell Colovaria to change the color of interfaces of a container +global +colovaria
-(A) As user, I can use the spell Confundo to introduce random error +network +confundo
-(A) As user, I can use the spell Reparo to cancel introduction of error +network +reparo
-
-(error logs / metrics / network / memory / cpu)
-
-Periculum/red
+(A) MVP, refactor all the primary features (better code architecture)
+(A) MVP, refine the WEB UI
