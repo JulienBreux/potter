@@ -3,7 +3,6 @@ package webui
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -202,7 +201,7 @@ func pageFilesUpdate(c *fiber.Ctx) error {
 	// TODO: Define perms
 	ctnt := normalizeNewlines([]byte(f.Content))
 	const perm = 0600
-	if err := ioutil.WriteFile(f.Path, ctnt, perm); err != nil {
+	if err := os.WriteFile(f.Path, ctnt, perm); err != nil {
 		return err
 	}
 
