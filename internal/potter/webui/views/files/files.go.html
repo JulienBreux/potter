@@ -3,6 +3,15 @@
 {{if .deleteError}}<p class="alert alert-error">Unable to remove: {{.path}}{{if .error}}<br>{{.error}}{{end}}</p>{{end}}
 {{if .updateSuccess}}<p class="alert alert-success">Updated successfully: {{.path}}</p>{{end}}
 {{if .updateError}}<p class="alert alert-error">Unable to update: {{.path}}{{if .error}}<br>{{.error}}{{end}}</p>{{end}}
+
+<form method="get" action="/files/read" enctype="multipart/form-data" accept-charset="utf-8">
+    <p>
+        <label for="input-path">New file</label>
+        <input type="text" id="input-path" name="path" placeholder="nimbus-2000.txt" autofocus>
+        <input type="submit" value="Create">
+    </p>
+</form>
+<hr>
 <ul>
 {{range $path, $size := .files}}
     <li>
