@@ -6,9 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	cmdRoot "github.com/julienbreux/potter/internal/potter/command/root"
-	cmdVersion "github.com/julienbreux/potter/internal/potter/command/version"
-	ver "github.com/julienbreux/potter/pkg/version"
+	cmdRoot "github.com/JulienBreux/potter/internal/potter/command/root"
+	cmdVersion "github.com/JulienBreux/potter/internal/potter/command/version"
+	ver "github.com/JulienBreux/potter/pkg/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -45,7 +45,7 @@ func New(in io.Reader, out, errIO io.Writer, args ...string) *cobra.Command {
 			// TODO: Add logger at debug level
 			// TODO: Add "tips" option
 			// TODO: Get URL from outside
-			fmt.Println("➡ Please report here: https://github.com/julienbreux/potter/issues/new?labels=bug")
+			fmt.Println("➡ Please report here: https://github.com/JulienBreux/potter/issues/new?labels=bug")
 			os.Exit(1)
 		}
 	}()

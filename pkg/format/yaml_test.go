@@ -3,7 +3,7 @@ package format_test
 import (
 	"testing"
 
-	"github.com/julienbreux/potter/pkg/format"
+	"github.com/JulienBreux/potter/pkg/format"
 
 	"github.com/stretchr/testify/assert"
 )

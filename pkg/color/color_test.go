@@ -3,7 +3,7 @@ package color_test
 import (
 	"testing"
 
-	"github.com/julienbreux/potter/pkg/color"
+	"github.com/JulienBreux/potter/pkg/color"
 	"github.com/stretchr/testify/assert"
 )
 

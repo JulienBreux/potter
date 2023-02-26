@@ -9,12 +9,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/JulienBreux/potter/pkg/color"
+	"github.com/JulienBreux/potter/pkg/emoji"
+	"github.com/JulienBreux/potter/pkg/namesgen"
 	"github.com/dustin/go-humanize"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
-	"github.com/julienbreux/potter/pkg/color"
-	"github.com/julienbreux/potter/pkg/emoji"
-	"github.com/julienbreux/potter/pkg/namesgen"
 )
 
 const (

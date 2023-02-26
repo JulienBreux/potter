@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/julienbreux/potter/pkg/version"
+	"github.com/JulienBreux/potter/pkg/version"
 
 	"github.com/stretchr/testify/assert"
 )

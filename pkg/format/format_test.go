@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/julienbreux/potter/pkg/format"
+	"github.com/JulienBreux/potter/pkg/format"
 )
 
 func TestPrint(t *testing.T) {

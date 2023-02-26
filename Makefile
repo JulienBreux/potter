@@ -18,7 +18,7 @@ run: build ## [binary] Run local binary
 	./bin/${BINNAME}
 
 image-build: ## [image] Build local image
-	docker build -t ghcr.io/julienbreux/${BINNAME}:latest .
+	docker build -t ghcr.io/JulienBreux/${BINNAME}:latest .
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

@@ -1,8 +1,8 @@
 package root
 
 import (
-	"github.com/julienbreux/potter/internal/potter/webui"
-	"github.com/julienbreux/potter/pkg/version"
+	"github.com/JulienBreux/potter/internal/potter/webui"
+	"github.com/JulienBreux/potter/pkg/version"
 	"github.com/spf13/cobra"
 )
 

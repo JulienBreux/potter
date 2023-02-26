@@ -5,7 +5,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/julienbreux/potter/pkg/format"
+	"github.com/JulienBreux/potter/pkg/format"
 )
 
 var (

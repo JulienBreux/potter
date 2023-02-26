@@ -3,7 +3,7 @@ package version
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/julienbreux/potter/pkg/version"
+	"github.com/JulienBreux/potter/pkg/version"
 )
 
 // New returns a command to print version

@@ -1,4 +1,4 @@
-module github.com/julienbreux/potter
+module github.com/JulienBreux/potter
 
 go 1.20
 

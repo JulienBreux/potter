@@ -3,7 +3,7 @@ package emoji_test
 import (
 	"testing"
 
-	"github.com/julienbreux/potter/pkg/emoji"
+	"github.com/JulienBreux/potter/pkg/emoji"
 	"github.com/stretchr/testify/assert"
 )
 

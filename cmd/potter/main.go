@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/julienbreux/potter/internal/potter/command"
+	"github.com/JulienBreux/potter/internal/potter/command"
 )
 
 func main() {

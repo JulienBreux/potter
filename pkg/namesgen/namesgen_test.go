@@ -3,7 +3,7 @@ package namesgen_test
 import (
 	"testing"
 
-	"github.com/julienbreux/potter/pkg/namesgen"
+	"github.com/JulienBreux/potter/pkg/namesgen"
 	"github.com/stretchr/testify/assert"
 )
 
