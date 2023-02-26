@@ -6,6 +6,7 @@ x (A) As user, I can display the files in files system
 x (A) As user, I can edit a file
 x (A) As user, I can delete a file
 x (A) As user, I can create a file
+x (A) Project, use Go 1.20
 (A) As user, I can display my current memory usage
 (A) As user, I can increase an additional memory load
 (A) As user, I can decrease the additional memory load
