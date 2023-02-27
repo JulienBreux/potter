@@ -21,3 +21,5 @@ cover.html
 
 # System
 .DS_Store
+
+dist/
