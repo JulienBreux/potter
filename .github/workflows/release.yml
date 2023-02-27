@@ -22,7 +22,7 @@ jobs:
 
   release:
     needs: lint
-    name: Release
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -57,20 +57,3 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.CR_PAT }}
-
-      - name: Changelog
-        uses: scottbrenner/generate-changelog-action@master
-        id: changelog
-
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.CR_PAT }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            ${{ steps.Changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
