@@ -39,7 +39,7 @@ dockers:
       - 'julienbreux/potter:latest'
       - 'ghcr.io/julienbreux/potter:{{ .Tag }}'
       - 'ghcr.io/julienbreux/potter:latest'
-    dockerfile: Dockerfile
+    dockerfile: Dockerfile.release
     build_flag_templates:
       - --pull
       - --platform=linux/amd64
