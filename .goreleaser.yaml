@@ -36,10 +36,10 @@ changelog:
       - '^test:'
 dockers:
   - image_templates:
-      - 'JulienBreux/potter:{{ .Tag }}'
-      - 'JulienBreux/potter:latest'
-      - 'ghcr.io/JulienBreux/potter:{{ .Tag }}'
-      - 'ghcr.io/JulienBreux/potter:latest'
+      - 'julienbreux/potter:{{ .Tag }}'
+      - 'julienbreux/potter:latest'
+      - 'ghcr.io/julienbreux/potter:{{ .Tag }}'
+      - 'ghcr.io/julienbreux/potter:latest'
     dockerfile: Dockerfile
     build_flag_templates:
       - --pull
