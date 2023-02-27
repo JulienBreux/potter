@@ -3,6 +3,6 @@ FROM gcr.io/distroless/static
 LABEL maintainer="Julien BREUX <julien.breux@gmail.com>"
 USER nonroot:nonroot
 
-COPY app /app
+COPY potter /app
 
 ENTRYPOINT ["/app"]
