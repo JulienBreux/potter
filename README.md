@@ -18,6 +18,22 @@ When something happens that you don't understand on a development, staging or pr
 
 ---
 
+### Images
+
+__Github:__
+
+```
+docker pull ghcr.io/julienbreux/potter:latest
+```
+
+__Docker Hub:__
+
+```
+docker pull julienbreux/potter:latest
+```
+
+---
+
 ### Examples
 
 ![Example tab Info](docs/assets/sc-eg-info.png)
