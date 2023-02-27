@@ -17,3 +17,13 @@ When something happens that you don't understand on a development, staging or pr
 [![Releases](https://img.shields.io/github/downloads/JulienBreux/potter/total.svg)](https://github.com/JulienBreux/potter/releases)
 
 ---
+
+### Examples
+
+![Example tab Info](docs/assets/sc-eg-info.png)
+
+![Example tab Environment Variables](docs/assets/sc-eg-envvars.png)
+
+![Example tab Files](docs/assets/sc-eg-files.png)
+
+![Example tab File Edit](docs/assets/sc-eg-file-edit.png)
