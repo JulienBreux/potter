@@ -7,11 +7,12 @@
 <form method="get" action="/files/read" enctype="multipart/form-data" accept-charset="utf-8">
     <p>
         <label for="input-path">New file</label>
-        <input type="text" id="input-path" name="path" placeholder="nimbus-2000.txt" autofocus>
+        <input type="text" id="input-path" name="path" placeholder="home/nimbus-2000.txt" autofocus>
         <input type="submit" value="Create">
     </p>
 </form>
 <hr>
+{{- if gt (len .files) 0}}
 <ul>
 {{range $path, $size := .files}}
     <li>
@@ -21,3 +22,8 @@
     </li>
 {{end}}
 </ul>
+{{- else}}
+<p class="alert alert-info">
+    There is no files here <em>(except app and ignore paths)</em>.
+</p>
+{{- end}}

@@ -1,5 +1,8 @@
 BINDIR  := $(CURDIR)/bin
 BINNAME ?= potter
+VERSION ?= dev
+COMMIT  ?= $(shell git rev-parse HEAD)
+DATE    ?= $(shell date +%FT%T%Z)
 
 test: ## [project] Test packages
 	go test -count=1 -cover -coverprofile=cover.out -v ./...
@@ -12,13 +15,16 @@ upgrade-deps: ## [project] Upgrade all dependencies
 
 build: ## [binary] Build local binary
 	mkdir -p ./bin
-	go build -o ./bin ./cmd/${BINNAME}
+	CGO_ENABLED=0 go build -ldflags='-s -w -X github.com/JulienBreux/potter/pkg/version.Version=${VERSION} -X github.com/JulienBreux/potter/pkg/version.Commit=${COMMIT} -X github.com/JulienBreux/potter/pkg/version.RawDate=${DATE}' -o ${BINDIR}/app ./cmd/${BINNAME}
 
 run: build ## [binary] Run local binary
-	./bin/${BINNAME}
+	./bin/app
 
 image-build: ## [image] Build local image
-	docker build -t ghcr.io/JulienBreux/${BINNAME}:latest .
+	docker build --build-arg VERSION=${VERSION} --build-arg COMMIT=${COMMIT} --build-arg DATE=${DATE} --no-cache -t ghcr.io/julienbreux/${BINNAME}:latest .
+
+image-run: ## [image] Run local image
+	docker run -p 8080:8080 -t ghcr.io/julienbreux/${BINNAME}:latest
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

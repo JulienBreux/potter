@@ -12,6 +12,7 @@ import (
 	"github.com/JulienBreux/potter/pkg/color"
 	"github.com/JulienBreux/potter/pkg/emoji"
 	"github.com/JulienBreux/potter/pkg/namesgen"
+	"github.com/JulienBreux/potter/pkg/version"
 	"github.com/dustin/go-humanize"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
@@ -23,7 +24,7 @@ const (
 
 	dateFormat = "02-01-2006 15:04:05"
 
-	directory = "./internal/potter/webui/views"
+	directory = "./views"
 	extension = ".go.html"
 )
 
@@ -33,7 +34,7 @@ type Webui struct {
 }
 
 // New creates a new Web UI server
-func New(version string) Webui {
+func New() Webui {
 	now := time.Now()
 
 	engine := html.New(directory, extension)
@@ -63,7 +64,8 @@ func New(version string) Webui {
 	app.Use(func(c *fiber.Ctx) error {
 		ua := string(c.Context().UserAgent())
 		vars := fiber.Map{
-			"version":   version,
+			"version":   version.Version,
+			"commit":    version.Commit,
 			"bgColor":   bgColor,
 			"fgColor":   fgColor,
 			"name":      name,
@@ -119,6 +121,11 @@ func pageVars(c *fiber.Ctx) error {
 	return c.Render("vars", vars)
 }
 
+// TODO: Move to ignore file + function
+var ignoreFilesPrefixes = [...]string{
+	".git", "bin", "boot", "dev", "etc", "lib", "proc", "app", ".dockerenv",
+}
+
 func pageFiles(c *fiber.Ctx) error {
 	files := make(map[string]string)
 
@@ -127,7 +134,12 @@ func pageFiles(c *fiber.Ctx) error {
 			if err != nil {
 				return err
 			}
-			if path == "." {
+			for _, prefix := range ignoreFilesPrefixes {
+				if strings.HasPrefix(path, prefix) {
+					return nil
+				}
+			}
+			if path == "." || info.IsDir() {
 				return nil
 			}
 			files[path] = humanize.Bytes(uint64(info.Size()))
@@ -154,18 +166,25 @@ func pageFiles(c *fiber.Ctx) error {
 }
 
 func pageFilesRead(c *fiber.Ctx) error {
-	file := c.Query("path")
+	path := c.Query("path")
 
-	newFile := false
-	content, err := os.ReadFile(file)
+	// TODO: Move
+	for _, prefix := range ignoreFilesPrefixes {
+		if strings.HasPrefix(path, prefix) {
+			return c.Redirect("/files?updateError=1&path=" + path + "&error=Path forbidden")
+		}
+	}
+
+	newPath := false
+	content, err := os.ReadFile(path)
 	if err != nil {
-		newFile = true
+		newPath = true
 	}
 
 	vars := fiber.Map{
-		"path":    c.Query("path"),
+		"path":    path,
 		"content": string(content),
-		"new":     newFile,
+		"new":     newPath,
 	}
 	return c.Render("files/read", vars)
 }
@@ -178,6 +197,13 @@ func pageFilesDelete(c *fiber.Ctx) error {
 		strings.HasPrefix(path, "./") ||
 		strings.HasPrefix(path, "../") {
 		return c.Redirect("/files?deleteError=1&path=" + path)
+	}
+
+	// TODO: Move
+	for _, prefix := range ignoreFilesPrefixes {
+		if strings.HasPrefix(path, prefix) {
+			return c.Redirect("/files?deleteError=1&path=" + path + "&error=Path forbidden")
+		}
 	}
 
 	if err := os.Remove(path); err != nil {
@@ -202,7 +228,7 @@ func pageFilesUpdate(c *fiber.Ctx) error {
 	ctnt := normalizeNewlines([]byte(f.Content))
 	const perm = 0600
 	if err := os.WriteFile(f.Path, ctnt, perm); err != nil {
-		return err
+		return c.Redirect("/files?updateError=1&path=" + f.Path + "&error=" + err.Error())
 	}
 
 	return c.Redirect("/files?updateSuccess=1&path=" + f.Path)
