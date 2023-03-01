@@ -7,7 +7,7 @@
 <form method="get" action="/files/read" enctype="multipart/form-data" accept-charset="utf-8">
     <p>
         <label for="input-path">New file</label>
-        <input type="text" id="input-path" name="path" placeholder="home/nimbus-2000.txt" autofocus>
+        <input type="text" id="input-path" name="path" placeholder="/home/nimbus-2000.txt" autofocus>
         <input type="submit" value="Create">
     </p>
 </form>
@@ -18,7 +18,7 @@
     <li>
     <a href="/files/read?path={{$path}}">Edit</a>
     <a href="/files/delete?path={{$path}}" onclick="return confirm('Are you sure you want to delete?');">Delete</a>
-    <span title="{{$size}}">{{$path}}</a>
+    <span>{{$path}} ({{$size}})</a>
     </li>
 {{end}}
 </ul>

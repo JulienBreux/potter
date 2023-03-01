@@ -3,7 +3,9 @@ package webui
 import (
 	"bytes"
 	"fmt"
+	"io/fs"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -13,9 +15,12 @@ import (
 	"github.com/JulienBreux/potter/pkg/emoji"
 	"github.com/JulienBreux/potter/pkg/namesgen"
 	"github.com/JulienBreux/potter/pkg/version"
-	"github.com/dustin/go-humanize"
+	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
+	"github.com/inhies/go-bytesize"
+	"github.com/pbnjay/memory"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 const (
@@ -85,6 +90,13 @@ func New() Webui {
 	app.Get("/files/read", pageFilesRead)
 	app.Post("/files/update", pageFilesUpdate)
 	app.Get("/files/delete", pageFilesDelete)
+	app.Get("/memory", pageMemory)
+
+	app.Get("/healthz", func(c *fiber.Ctx) error {
+		// TODO: Log
+		return c.Status(http.StatusOK).SendString("ok")
+	})
+	app.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
 
 	return Webui{
 		app: app,
@@ -123,28 +135,39 @@ func pageVars(c *fiber.Ctx) error {
 
 // TODO: Move to ignore file + function
 var ignoreFilesPrefixes = [...]string{
-	".git", "bin", "boot", "dev", "etc", "lib", "proc", "app", ".dockerenv",
+	// "/app",
+	"/.git", // "/.dockerenv",
+	"/bin", "/boot", "/dev", "/dev", "/etc",
+	"/lib", "/proc", "/root", "/run", "/sys",
+	"/usr", "/var", "/views", "/sbin",
 }
 
 func pageFiles(c *fiber.Ctx) error {
-	files := make(map[string]string)
+	files := make(map[string]bytesize.ByteSize)
 
-	err := filepath.Walk(".",
-		func(path string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir("/",
+		func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
 				return err
 			}
 			for _, prefix := range ignoreFilesPrefixes {
 				if strings.HasPrefix(path, prefix) {
-					return nil
+					return filepath.SkipDir
 				}
 			}
-			if path == "." || info.IsDir() {
+
+			if path == "/" && d.IsDir() {
 				return nil
 			}
-			files[path] = humanize.Bytes(uint64(info.Size()))
+
+			var bs bytesize.ByteSize
+			if f, err := d.Info(); err == nil {
+				bs = bytesize.New(float64(f.Size()))
+			}
+			files[path] = bs
 			return nil
 		})
+
 	if err != nil {
 		log.Println(err)
 	}
@@ -232,6 +255,15 @@ func pageFilesUpdate(c *fiber.Ctx) error {
 	}
 
 	return c.Redirect("/files?updateSuccess=1&path=" + f.Path)
+}
+
+func pageMemory(c *fiber.Ctx) error {
+	vars := fiber.Map{
+		"memoryCurrent": "todo",
+		"memoryFree":    bytesize.New(float64(memory.FreeMemory())),
+		"memoryTotal":   bytesize.New(float64(memory.TotalMemory())),
+	}
+	return c.Render("memory", vars)
 }
 
 func normalizeNewlines(d []byte) []byte {
