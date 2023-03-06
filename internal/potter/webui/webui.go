@@ -29,7 +29,7 @@ const (
 
 	dateFormat = "02-01-2006 15:04:05"
 
-	directory = "./views"
+	directory = "./internal/potter/webui/views"
 	extension = ".go.html"
 )
 
