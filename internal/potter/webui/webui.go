@@ -91,11 +91,7 @@ func New() Webui {
 	app.Post("/files/update", pageFilesUpdate)
 	app.Get("/files/delete", pageFilesDelete)
 	app.Get("/memory", pageMemory)
-
-	app.Get("/healthz", func(c *fiber.Ctx) error {
-		// TODO: Log
-		return c.Status(http.StatusOK).SendString("ok")
-	})
+	app.Get("/healthz", pageHealthCheck)
 	app.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
 
 	return Webui{
@@ -110,6 +106,10 @@ func (w Webui) Run() error {
 
 func userAgentIsCurl(userAgent string) bool {
 	return userAgent[0:4] == "curl"
+}
+
+func pageHealthCheck(c *fiber.Ctx) error {
+	return c.Status(http.StatusOK).SendString("ok")
 }
 
 func pageIndex(c *fiber.Ctx) error {
@@ -135,11 +135,10 @@ func pageVars(c *fiber.Ctx) error {
 
 // TODO: Move to ignore file + function
 var ignoreFilesPrefixes = [...]string{
-	// "/app",
-	"/.git", // "/.dockerenv",
+	"/.git",
 	"/bin", "/boot", "/dev", "/dev", "/etc",
 	"/lib", "/proc", "/root", "/run", "/sys",
-	"/usr", "/var", "/views", "/sbin",
+	"/sbin", "/usr", "/var", "/webui",
 }
 
 func pageFiles(c *fiber.Ctx) error {
